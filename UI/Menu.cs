@@ -1,5 +1,5 @@
 using System.Collections;
-using Gnomes.Interactions;
+using Parent_House_Framework.Interactions;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Events;
