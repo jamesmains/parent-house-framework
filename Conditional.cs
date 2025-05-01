@@ -4,7 +4,6 @@ using UnityEngine;
 
 namespace Parent_House_Framework {
     [Serializable]
-
     public abstract class Condition {
         public abstract bool IsConditionMet();
     }
@@ -30,6 +29,12 @@ namespace Parent_House_Framework {
 
         public override bool IsConditionMet() {
             return !Conditions.Exists(c => c.IsConditionMet());
+        }
+    }
+
+    public class DebugCondition : Condition {
+        public override bool IsConditionMet() {
+            return false;
         }
     }
 }

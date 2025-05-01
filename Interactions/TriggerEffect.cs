@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Parent_House_Framework.Cores;
 using Sirenix.OdinInspector;
@@ -28,9 +29,9 @@ namespace Parent_House_Framework.Interactions {
             }
         }
 
-        public void HandleStateChange(bool state) {
+        public void HandleStateChange(bool state, Action callback) {
             foreach (var behavior in Behaviors) {
-                behavior.HandleState(state);
+                behavior.HandleState(state, callback);
             }
         }
     }

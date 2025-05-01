@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Sirenix.OdinInspector;
@@ -34,9 +35,9 @@ namespace Parent_House_Framework.Interactions {
             Trigger.OnChangeState -= Handle;
         }
 
-        private void Handle(bool state) {
+        private void Handle(bool state, Action callback) {
             foreach (var target in BehaviorEffects) {
-                target.HandleStateChange(state);
+                target.HandleStateChange(state, callback);
             }
         }
     }

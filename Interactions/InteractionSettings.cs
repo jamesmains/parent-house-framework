@@ -11,5 +11,9 @@ namespace Parent_House_Framework.Interactions {
         public bool ShowInteractPrompt;
         public bool ActiveOnEnable;
         public bool Toggles;
+        
+        // Todo: Work in progress
+        public bool AlwaysTriggers;
+        public bool ResetOnceFinished;
     }
 }

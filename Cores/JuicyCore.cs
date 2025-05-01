@@ -1,5 +1,8 @@
 using System;
+using System.Collections.Generic;
 using DG.Tweening;
+using DialogueEditor;
+using Parent_House_Framework.Interactions;
 using Sirenix.OdinInspector;
 using TMPro;
 using UnityEngine;
@@ -16,12 +19,17 @@ namespace Parent_House_Framework.Cores {
     [Serializable]
     public abstract class ObjectEffect {
         protected GameObject AssociatedObject;
-
+        protected Action Callback;
         public virtual void Initialize(GameObject selfObject) {
             AssociatedObject = selfObject;
         }
 
-        public virtual void HandleState(bool state) {
+        public virtual void HandleState(bool state, Action callback) {
+            Callback = callback;
+        }
+
+        public virtual void HandleCallbacks() {
+            Callback.Invoke();
         }
     }
 
@@ -35,8 +43,8 @@ namespace Parent_House_Framework.Cores {
             Anim = AssociatedObject.GetComponent<Animator>();
         }
 
-        public override void HandleState(bool state) {
-            base.HandleState(state);
+        public override void HandleState(bool state, Action callback) {
+            base.HandleState(state, callback);
             Anim.SetBool(BoolName, state);
         }
     }
@@ -44,8 +52,8 @@ namespace Parent_House_Framework.Cores {
     [Serializable]
     public class GameObjectActiveObjectEffect : ObjectEffect {
 
-        public override void HandleState(bool state) {
-            base.HandleState(state);
+        public override void HandleState(bool state, Action callback) {
+            base.HandleState(state, callback);
             AssociatedObject.SetActive(state);
         }
     }
@@ -65,8 +73,8 @@ namespace Parent_House_Framework.Cores {
             m_Image = AssociatedObject.GetComponent<Image>();
         }
 
-        public override void HandleState(bool state) {
-            base.HandleState(state);
+        public override void HandleState(bool state, Action callback) {
+            base.HandleState(state, callback);
             m_Image.sprite = state ? OnSprite : OffSprite;
         }
     }
@@ -86,8 +94,8 @@ namespace Parent_House_Framework.Cores {
             m_TextMeshProUGUI = AssociatedObject.GetComponent<TextMeshProUGUI>();
         }
 
-        public override void HandleState(bool state) {
-            base.HandleState(state);
+        public override void HandleState(bool state, Action callback) {
+            base.HandleState(state, callback);
             m_TextMeshProUGUI.text = state ? OnMessage : OffMessage;
         }
     }
@@ -100,7 +108,7 @@ namespace Parent_House_Framework.Cores {
         [SerializeField, FoldoutGroup("Settings")]
         private UnityEvent OffEvent = new();
 
-        public override void HandleState(bool state) {
+        public override void HandleState(bool state, Action callback) {
             if (state) {
                 OnEvent?.Invoke();
             }
@@ -130,8 +138,8 @@ namespace Parent_House_Framework.Cores {
             m_CanvasGroup = AssociatedObject.GetComponent<CanvasGroup>();
         }
 
-        public override void HandleState(bool state) {
-            base.HandleState(state);
+        public override void HandleState(bool state, Action callback) {
+            base.HandleState(state, callback);
             m_CanvasGroup.DOFade(state ? OpacityRange.y : OpacityRange.x, Duration);
         }
     }
@@ -171,8 +179,8 @@ namespace Parent_House_Framework.Cores {
         }
 #endif
 
-        public override void HandleState(bool state) {
-            base.HandleState(state);
+        public override void HandleState(bool state, Action callback) {
+            base.HandleState(state, callback);
             AssociatedObject.transform.DOLocalMove(state ? EndPosition : StartPosition, Duration)
                 .SetEase(state ? EaseIn : EaseOut, Overshoot);
         }
@@ -203,8 +211,8 @@ namespace Parent_House_Framework.Cores {
         }
 #endif
         
-        public override void HandleState(bool state) {
-            base.HandleState(state);
+        public override void HandleState(bool state, Action callback) {
+            base.HandleState(state, callback);
             AssociatedObject.transform.DORotate(state ? EndRotation : StartRotation, Duration, RotateMode)
                 .SetEase(state ? EaseIn : EaseOut, Overshoot);
         }
@@ -228,10 +236,11 @@ namespace Parent_House_Framework.Cores {
             MaxSize = AssociatedObject.transform.localScale;
         }
 #endif
-        public override void HandleState(bool state) {
-            base.HandleState(state);
-            AssociatedObject.transform.DOScale(state ? MaxSize : MinSize, Duration)
+        public override void HandleState(bool state, Action callback) {
+            base.HandleState(state, callback);
+            var move = AssociatedObject.transform.DOScale(state ? MaxSize : MinSize, Duration)
                 .SetEase(state ? EaseIn : EaseOut, Overshoot);
+            move.OnComplete(() => callback());
         }
     }
 
@@ -264,8 +273,8 @@ namespace Parent_House_Framework.Cores {
             MaxSize = m_RectTransform.localScale;
         }
 #endif
-        public override void HandleState(bool state) {
-            base.HandleState(state);
+        public override void HandleState(bool state, Action callback) {
+            base.HandleState(state, callback);
             m_RectTransform.DOScale(state ? MaxSize : MinSize, Duration)
                 .SetEase(state ? EaseIn : EaseOut, Overshoot);
         }
@@ -296,8 +305,8 @@ namespace Parent_House_Framework.Cores {
         }
 #endif
         
-        public override void HandleState(bool state) {
-            base.HandleState(state);
+        public override void HandleState(bool state, Action callback) {
+            base.HandleState(state, callback);
             m_RectTransform.DORotate(state ? EndRotation : StartRotation, Duration, RotateMode)
                 .SetEase(state ? EaseIn : EaseOut, Overshoot);
         }
@@ -323,10 +332,32 @@ namespace Parent_House_Framework.Cores {
         }
 #endif
 
-        public override void HandleState(bool state) {
-            base.HandleState(state);
+        public override void HandleState(bool state, Action callback) {
+            base.HandleState(state, callback);
             m_RectTransform.DOAnchorPos3D(state ? EndPosition : StartPosition, Duration)
                 .SetEase(state ? EaseIn : EaseOut, Overshoot);
+        }
+    }
+
+    [Serializable]
+    public class TalkToEffect : ObjectEffect {
+        [SerializeField, FoldoutGroup("Dependencies"), ReadOnly]
+        private NPCConversation Convo;
+        
+        private List<Action> m_Callbacks;
+
+        public override void Initialize(GameObject parentObject) {
+            base.Initialize(parentObject);
+            Convo = parentObject.GetComponent<NPCConversation>();
+        }
+        public override void HandleState(bool state, Action callback) {
+            base.HandleState(state, callback);
+            if(state) {
+                ConversationManager.Instance.StartConversation(Convo);
+                // Todo: Figure out the point fo this?
+                // ConversationManager.OnConversationEnded += HandleCallbacks;
+                // ConversationManager.OnConversationEnded += delegate{ConversationManager.OnConversationEnded -= HandleCallbacks;};
+            }
         }
     }
 }
