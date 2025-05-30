@@ -1,10 +1,11 @@
 using System.Collections;
-using Parent_House_Framework.Interactions;
+using parent_house_framework.Conditions;
+using parent_house_framework.Interactions;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace Parent_House_Framework.UI {
+namespace parent_house_framework.UI {
     public enum MenuState {
         Closed,
         Open
@@ -21,34 +22,34 @@ namespace Parent_House_Framework.UI {
 
     [RequireComponent(typeof(CanvasGroup))]
     public class Menu : SerializedMonoBehaviour {
-        [SerializeField] [FoldoutGroup("Settings")]
+        [SerializeField, FoldoutGroup("Settings")]
         private MenuState InitialState = MenuState.Open;
 
-        [SerializeField] [FoldoutGroup("Settings")]
+        [SerializeField, FoldoutGroup("Settings")]
         private bool InstantOnEnable = true;
-
-        [SerializeField] [FoldoutGroup("Events")]
-        private UnityEvent OnFinishOpen = new();
-
-        [SerializeField] [FoldoutGroup("Events")]
-        private UnityEvent OnFinishClose = new();
-
-        [SerializeField] [FoldoutGroup("Dependencies")] [ReadOnly]
-        private CanvasGroup CanvasGroup;
-
-        [SerializeField] [FoldoutGroup("Dependencies")] [ReadOnly]
-        private Trigger MenuTrigger;
-
-        [SerializeField] [FoldoutGroup("Status")] [ReadOnly]
-        public MenuState State;
-
-        [SerializeField] [FoldoutGroup("Status")] [ReadOnly]
+        
+        [SerializeField, FoldoutGroup("Settings")]
         private float OpenTime;
 
-        [SerializeField] [FoldoutGroup("Status")] [ReadOnly]
+        [SerializeField, FoldoutGroup("Settings")]
         private float CloseTime;
 
-        [SerializeField] [FoldoutGroup("Status")] [ReadOnly]
+        [SerializeField, FoldoutGroup("Events")]
+        private UnityEvent OnFinishOpen = new();
+
+        [SerializeField, FoldoutGroup("Events")]
+        private UnityEvent OnFinishClose = new();
+
+        [SerializeField, FoldoutGroup("Dependencies"), ReadOnly]
+        private CanvasGroup CanvasGroup;
+
+        [SerializeField, FoldoutGroup("Dependencies"), ReadOnly]
+        private Trigger MenuTrigger;
+
+        [SerializeField, FoldoutGroup("Status"), ReadOnly]
+        public MenuState State;
+
+        [SerializeField, FoldoutGroup("Status"), ReadOnly]
         private bool Initialized;
 
 #if UNITY_EDITOR
@@ -64,23 +65,25 @@ namespace Parent_House_Framework.UI {
 #endif
         private void OnEnable() {
             Initialized = false;
-            if (CanvasGroup == null) CanvasGroup = GetComponent<CanvasGroup>();
-            if (MenuTrigger == null) MenuTrigger = GetComponent<Trigger>();
-
-            if (InitialState == MenuState.Closed) {
-                Open(true);
-                Initialized = true;
-                Close(InstantOnEnable);
-            }
-            else {
-                Close(true);
-                Initialized = true;
-                Open(InstantOnEnable);
-            }
+            if (!CanvasGroup) CanvasGroup = GetComponent<CanvasGroup>();
+            if (!MenuTrigger) MenuTrigger = GetComponent<Trigger>();
 
             StartCoroutine(Init());
 
             IEnumerator Init() {
+                if (MenuTrigger) {
+                    while (!MenuTrigger.IsReady) {
+                        yield return new WaitForEndOfFrame();
+                    }
+                }
+                Initialized = true;
+                if (InitialState == MenuState.Closed) {
+                    Close(InstantOnEnable);
+                }
+                else {
+                    Open(InstantOnEnable);
+                }
+
                 yield return new WaitForEndOfFrame();
             }
         }
@@ -99,7 +102,7 @@ namespace Parent_House_Framework.UI {
             if (!Application.isPlaying)
                 return;
 #endif
-            MenuTrigger.SetState(true);
+            MenuTrigger.SetState(true, instant);
             Activate();
         }
 
@@ -109,7 +112,7 @@ namespace Parent_House_Framework.UI {
             if (!Application.isPlaying)
                 return;
 #endif
-            MenuTrigger.SetState(false);
+            MenuTrigger.SetState(false, instant);
             Deactivate();
         }
 

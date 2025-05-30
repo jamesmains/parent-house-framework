@@ -1,8 +1,5 @@
 using System;
-using System.Collections.Generic;
 using DG.Tweening;
-using DialogueEditor;
-using Parent_House_Framework.Interactions;
 using Sirenix.OdinInspector;
 using TMPro;
 using UnityEngine;
@@ -12,19 +9,22 @@ using UnityEngine.UI;
 // Todo: Make more readable -- pretty hard to sort through
 // |-> Either individual files or group by category
 
-namespace Parent_House_Framework.Cores {
+namespace parent_house_framework.Cores {
     public class JuicyCore : MonoBehaviour {
     }
 
     [Serializable]
     public abstract class ObjectEffect {
+        // Todo: Callback currently doesn't really do anything. And currently it would be busted if two objects had the same callback since it would just ChangeState twice.
+
         protected GameObject AssociatedObject;
         protected Action Callback;
+
         public virtual void Initialize(GameObject selfObject) {
             AssociatedObject = selfObject;
         }
 
-        public virtual void HandleState(bool state, Action callback) {
+        public virtual void HandleState(bool state, bool instant, Action callback) {
             Callback = callback;
         }
 
@@ -43,17 +43,16 @@ namespace Parent_House_Framework.Cores {
             Anim = AssociatedObject.GetComponent<Animator>();
         }
 
-        public override void HandleState(bool state, Action callback) {
-            base.HandleState(state, callback);
+        public override void HandleState(bool state, bool instant, Action callback) {
+            base.HandleState(state, instant, callback);
             Anim.SetBool(BoolName, state);
         }
     }
 
     [Serializable]
     public class GameObjectActiveObjectEffect : ObjectEffect {
-
-        public override void HandleState(bool state, Action callback) {
-            base.HandleState(state, callback);
+        public override void HandleState(bool state, bool instant, Action callback) {
+            base.HandleState(state, instant, callback);
             AssociatedObject.SetActive(state);
         }
     }
@@ -73,8 +72,8 @@ namespace Parent_House_Framework.Cores {
             m_Image = AssociatedObject.GetComponent<Image>();
         }
 
-        public override void HandleState(bool state, Action callback) {
-            base.HandleState(state, callback);
+        public override void HandleState(bool state, bool instant, Action callback) {
+            base.HandleState(state, instant, callback);
             m_Image.sprite = state ? OnSprite : OffSprite;
         }
     }
@@ -94,8 +93,8 @@ namespace Parent_House_Framework.Cores {
             m_TextMeshProUGUI = AssociatedObject.GetComponent<TextMeshProUGUI>();
         }
 
-        public override void HandleState(bool state, Action callback) {
-            base.HandleState(state, callback);
+        public override void HandleState(bool state, bool instant, Action callback) {
+            base.HandleState(state, instant, callback);
             m_TextMeshProUGUI.text = state ? OnMessage : OffMessage;
         }
     }
@@ -108,7 +107,7 @@ namespace Parent_House_Framework.Cores {
         [SerializeField, FoldoutGroup("Settings")]
         private UnityEvent OffEvent = new();
 
-        public override void HandleState(bool state, Action callback) {
+        public override void HandleState(bool state, bool instant, Action callback) {
             if (state) {
                 OnEvent?.Invoke();
             }
@@ -121,10 +120,10 @@ namespace Parent_House_Framework.Cores {
     [Serializable]
     public class CanvasFadeEffect : ObjectEffect {
         [SerializeField, FoldoutGroup("Settings")]
-        private Vector2 OpacityRange;
+        private Vector2 OpacityRange = Vector2.up;
 
         [SerializeField, FoldoutGroup("Settings")]
-        private float Duration;
+        private float Duration = 0.2f;
 
         private CanvasGroup m_CanvasGroup;
 
@@ -138,35 +137,40 @@ namespace Parent_House_Framework.Cores {
             m_CanvasGroup = AssociatedObject.GetComponent<CanvasGroup>();
         }
 
-        public override void HandleState(bool state, Action callback) {
-            base.HandleState(state, callback);
-            m_CanvasGroup.DOFade(state ? OpacityRange.y : OpacityRange.x, Duration);
+        public override void HandleState(bool state, bool instant, Action callback) {
+            base.HandleState(state, instant, callback);
+            if (instant) {
+                m_CanvasGroup.alpha = state ? OpacityRange.y : OpacityRange.x;
+            }
+            else {
+                m_CanvasGroup.DOFade(state ? OpacityRange.y : OpacityRange.x, Duration);
+            }
         }
     }
 
     [Serializable]
     public abstract class TweenEffect : ObjectEffect {
         [SerializeField, FoldoutGroup("Settings")]
-        protected Ease EaseIn = Ease.InOutSine;
+        protected Ease EaseIn = Ease.OutElastic;
 
         [SerializeField, FoldoutGroup("Settings")]
-        protected Ease EaseOut = Ease.InOutSine;
+        protected Ease EaseOut = Ease.OutElastic;
 
         [SerializeField, FoldoutGroup("Settings")]
-        protected float Duration;
+        protected float Duration = 2f;
 
         [SerializeField, FoldoutGroup("Settings")]
         protected float Overshoot;
     }
-    
+
     [Serializable]
     public class TransformMoveEffect : TweenEffect {
         [SerializeField, FoldoutGroup("Settings")]
         private Vector3 StartPosition;
-        
+
         [SerializeField, FoldoutGroup("Settings")]
         private Vector3 EndPosition;
-        
+
 #if UNITY_EDITOR
         [Button]
         public void SetStartPos() {
@@ -179,13 +183,13 @@ namespace Parent_House_Framework.Cores {
         }
 #endif
 
-        public override void HandleState(bool state, Action callback) {
-            base.HandleState(state, callback);
+        public override void HandleState(bool state, bool instant, Action callback) {
+            base.HandleState(state, instant, callback);
             AssociatedObject.transform.DOLocalMove(state ? EndPosition : StartPosition, Duration)
                 .SetEase(state ? EaseIn : EaseOut, Overshoot);
         }
     }
-    
+
     [Serializable]
     public class TransformRotateEffect : TweenEffect {
         [SerializeField, FoldoutGroup("Settings")]
@@ -210,14 +214,14 @@ namespace Parent_House_Framework.Cores {
             EndRotation = AssociatedObject.transform.eulerAngles;
         }
 #endif
-        
-        public override void HandleState(bool state, Action callback) {
-            base.HandleState(state, callback);
+
+        public override void HandleState(bool state, bool instant, Action callback) {
+            base.HandleState(state, instant, callback);
             AssociatedObject.transform.DORotate(state ? EndRotation : StartRotation, Duration, RotateMode)
                 .SetEase(state ? EaseIn : EaseOut, Overshoot);
         }
     }
-    
+
     [Serializable]
     public class TransformScaleEffect : TweenEffect {
         [SerializeField, FoldoutGroup("Settings")]
@@ -236,15 +240,15 @@ namespace Parent_House_Framework.Cores {
             MaxSize = AssociatedObject.transform.localScale;
         }
 #endif
-        public override void HandleState(bool state, Action callback) {
-            base.HandleState(state, callback);
+        public override void HandleState(bool state, bool instant, Action callback) {
+            base.HandleState(state, instant, callback);
             var move = AssociatedObject.transform.DOScale(state ? MaxSize : MinSize, Duration)
                 .SetEase(state ? EaseIn : EaseOut, Overshoot);
             move.OnComplete(() => callback());
         }
     }
 
-    
+
     [Serializable]
     public abstract class RectTweenEffect : TweenEffect {
         protected RectTransform m_RectTransform;
@@ -273,10 +277,15 @@ namespace Parent_House_Framework.Cores {
             MaxSize = m_RectTransform.localScale;
         }
 #endif
-        public override void HandleState(bool state, Action callback) {
-            base.HandleState(state, callback);
-            m_RectTransform.DOScale(state ? MaxSize : MinSize, Duration)
-                .SetEase(state ? EaseIn : EaseOut, Overshoot);
+        public override void HandleState(bool state, bool instant, Action callback) {
+            base.HandleState(state, instant, callback);
+            if (instant) {
+                m_RectTransform.localScale = state ? MaxSize : MinSize;
+            }
+            else {
+                m_RectTransform.DOScale(state ? MaxSize : MinSize, Duration)
+                    .SetEase(state ? EaseIn : EaseOut, Overshoot);
+            }
         }
     }
 
@@ -304,11 +313,17 @@ namespace Parent_House_Framework.Cores {
             EndRotation = m_RectTransform.eulerAngles;
         }
 #endif
-        
-        public override void HandleState(bool state, Action callback) {
-            base.HandleState(state, callback);
-            m_RectTransform.DORotate(state ? EndRotation : StartRotation, Duration, RotateMode)
-                .SetEase(state ? EaseIn : EaseOut, Overshoot);
+
+        public override void HandleState(bool state, bool instant, Action callback) {
+            base.HandleState(state, instant, callback);
+            if (instant) {
+                // Todo: fix instant rect transform rotation
+                // m_RectTransform.rotation = state ? EndRotation : StartRotation;
+            }
+            else {
+                m_RectTransform.DORotate(state ? EndRotation : StartRotation, Duration, RotateMode)
+                    .SetEase(state ? EaseIn : EaseOut, Overshoot);
+            }
         }
     }
 
@@ -316,10 +331,10 @@ namespace Parent_House_Framework.Cores {
     public class RectTransformMoveEffect : RectTweenEffect {
         [SerializeField, FoldoutGroup("Settings")]
         private Vector3 StartPosition;
-        
+
         [SerializeField, FoldoutGroup("Settings")]
         private Vector3 EndPosition;
-        
+
 #if UNITY_EDITOR
         [Button]
         public void SetStartPos() {
@@ -332,31 +347,47 @@ namespace Parent_House_Framework.Cores {
         }
 #endif
 
-        public override void HandleState(bool state, Action callback) {
-            base.HandleState(state, callback);
-            m_RectTransform.DOAnchorPos3D(state ? EndPosition : StartPosition, Duration)
-                .SetEase(state ? EaseIn : EaseOut, Overshoot);
+        public override void HandleState(bool state, bool instant, Action callback) {
+            base.HandleState(state, instant, callback);
+            if (instant) {
+                m_RectTransform.anchoredPosition = state ? EndPosition : StartPosition;
+            }
+            else {
+                m_RectTransform.DOAnchorPos3D(state ? EndPosition : StartPosition, Duration)
+                    .SetEase(state ? EaseIn : EaseOut, Overshoot);
+            }
         }
     }
 
     [Serializable]
-    public class TalkToEffect : ObjectEffect {
-        [SerializeField, FoldoutGroup("Dependencies"), ReadOnly]
-        private NPCConversation Convo;
-        
-        private List<Action> m_Callbacks;
+    public class RectTransformLocalMoveEffect : RectTweenEffect {
+        [SerializeField, FoldoutGroup("Settings")]
+        private Vector3 StartPosition;
 
-        public override void Initialize(GameObject parentObject) {
-            base.Initialize(parentObject);
-            Convo = parentObject.GetComponent<NPCConversation>();
+        [SerializeField, FoldoutGroup("Settings")]
+        private Vector3 EndPosition;
+
+#if UNITY_EDITOR
+        [Button]
+        public void SetStartPos() {
+            StartPosition = m_RectTransform.localPosition;
         }
-        public override void HandleState(bool state, Action callback) {
-            base.HandleState(state, callback);
-            if(state) {
-                ConversationManager.Instance.StartConversation(Convo);
-                // Todo: Figure out the point fo this?
-                // ConversationManager.OnConversationEnded += HandleCallbacks;
-                // ConversationManager.OnConversationEnded += delegate{ConversationManager.OnConversationEnded -= HandleCallbacks;};
+
+        [Button]
+        public void SetEndPos() {
+            EndPosition = m_RectTransform.localPosition;
+        }
+#endif
+
+        public override void HandleState(bool state, bool instant, Action callback) {
+            base.HandleState(state, instant, callback);
+
+            if (instant) {
+                m_RectTransform.localPosition = state ? EndPosition : StartPosition;
+            }
+            else {
+                m_RectTransform.DOLocalMove(state ? EndPosition : StartPosition, Duration)
+                    .SetEase(state ? EaseIn : EaseOut, Overshoot);
             }
         }
     }

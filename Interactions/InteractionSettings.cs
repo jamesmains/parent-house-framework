@@ -1,6 +1,6 @@
 using System;
 
-namespace Parent_House_Framework.Interactions {
+namespace parent_house_framework.Interactions {
     [Serializable]
     public class InteractionSettings
     {
@@ -10,6 +10,8 @@ namespace Parent_House_Framework.Interactions {
         public bool RequireKeyToActivate;
         public bool ShowInteractPrompt;
         public bool ActiveOnEnable;
+        public bool InstantOnEnable;
+        public bool ReadyOnEnable;
         public bool Toggles;
         
         // Todo: Work in progress

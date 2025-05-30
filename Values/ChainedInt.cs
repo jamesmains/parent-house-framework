@@ -1,13 +1,16 @@
 using System;
+using Sirenix.OdinInspector;
+using UnityEngine;
 
-namespace Parent_House_Framework.Values {
+namespace parent_house_framework.Values {
     [Serializable]
     public class ChainedInt {
-        // Todo: Would be nice to have minValue so it's not hardcoded to be a time variable...
-        public ChainedInt(int maxValue) {
+        public ChainedInt(int maxValue, int minValue = 1, bool overflows = true) {
             m_maxValue = maxValue;
+            m_minValue = minValue;
+            m_overflows = overflows;
             ObservedValue = new ObservableValue<int>();
-            Value = 1;
+            Value = m_minValue;
         }
 
         public ChainedInt Link(ChainedInt chainedInt) {
@@ -16,27 +19,43 @@ namespace Parent_House_Framework.Values {
         }
 
         private readonly int m_maxValue;
+        private readonly int m_minValue;
+        private readonly bool m_overflows;
         public ObservableValue<int> ObservedValue { get; }
         private ChainedInt m_chainedInt;
+
+        [SerializeField, BoxGroup("Status")]
+        private int m_value;
 
         public int Value {
             get => ObservedValue.Value;
             private set {
-                if(ObservedValue.Value.Equals(value)) return;
-                ObservedValue.Value = value;
-                if (ObservedValue.Value <= m_maxValue) return;
-                m_chainedInt?.AddValue(1);
-                ObservedValue.Value = 1;
+                if (ObservedValue.Value.Equals(value)) return;
+
+                ObservedValue.Value = Math.Clamp(value, m_minValue, m_maxValue);
+
+                // Overflow to chained int if over max
+                if (ObservedValue.Value > m_maxValue && m_overflows) {
+                    m_chainedInt?.AddValue(1);
+                    ObservedValue.Value = m_minValue;
+                }
+                m_value = ObservedValue.Value;
             }
         }
 
         public void AddValue(int value) {
-            Value += value;
-            while (Value >= m_maxValue) {
-                Value = (ObservedValue.Value - m_maxValue);
-                if(m_chainedInt != null)
-                    m_chainedInt.Value = (m_chainedInt.Value + 1);
+            int newValue = Value + value;
+
+            while (newValue > m_maxValue && m_overflows) {
+                newValue -= (m_maxValue - m_minValue + 1); // Spread range
+                m_chainedInt?.AddValue(1);
             }
+
+            if (newValue > m_maxValue && !m_overflows) {
+                newValue = m_maxValue;
+            }
+
+            Value = newValue;
         }
     }
 }

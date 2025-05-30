@@ -1,6 +1,6 @@
 using Sirenix.OdinInspector;
 
-namespace Parent_House_Framework {
+namespace parent_house_framework {
     public abstract class EventPropagator: SerializedScriptableObject
     {
         public abstract void Invoke();

@@ -4,27 +4,18 @@ using System.Linq;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
-namespace Parent_House_Framework.Interactions {
+namespace parent_house_framework.Interactions {
     public class TriggerListener : MonoBehaviour {
-        [SerializeField, FoldoutGroup("Settings")]
+        [SerializeField, FoldoutGroup("Dependencies")]
         public Trigger Trigger;
 
-        [SerializeField, FoldoutGroup("Settings")]
-        private bool AutomaticallyGetEffects = true;
-
-        [SerializeField, FoldoutGroup("Dependencies"), HideIf("AutomaticallyGetEffects")]
+        [SerializeField, FoldoutGroup("Dependencies")]
         [ValueDropdown(nameof(GetAllTriggerEffects), IsUniqueList = true)]
         public TriggerEffect[] BehaviorEffects;
 
-        private IEnumerable<ValueDropdownItem> GetAllTriggerEffects()
-        {
+        private IEnumerable<ValueDropdownItem> GetAllTriggerEffects() {
             return FindObjectsOfType<TriggerEffect>()
                 .Select(effect => new ValueDropdownItem($"{effect.customName} ({effect.gameObject.name})", effect));
-        }
-    
-        private void Awake() {
-            if (AutomaticallyGetEffects)
-                BehaviorEffects = GetComponentsInChildren<TriggerEffect>();
         }
 
         private void OnEnable() {
@@ -35,9 +26,9 @@ namespace Parent_House_Framework.Interactions {
             Trigger.OnChangeState -= Handle;
         }
 
-        private void Handle(bool state, Action callback) {
+        private void Handle(bool state, bool instant, Action callback) {
             foreach (var target in BehaviorEffects) {
-                target.HandleStateChange(state, callback);
+                target.HandleStateChange(state, instant, callback);
             }
         }
     }

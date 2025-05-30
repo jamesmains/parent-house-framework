@@ -1,4 +1,4 @@
-namespace Parent_House_Framework.Interactions {
+namespace parent_house_framework.Interactions {
     public enum NotifyState {
         Entry,
         Exit
@@ -6,7 +6,7 @@ namespace Parent_House_Framework.Interactions {
 
     public interface IInteractable {
         public void ChangeState();
-        public void SetState(bool state);
+        public void SetState(bool state, bool instant);
         public void Notify(NotifyState state);
         public bool RequireButtonToChangeState();
     }

@@ -1,12 +1,13 @@
 using System;
 using System.Collections;
+using parent_house_framework.Conditions;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
 // Todo: Need callback for when interaction is done to optionally reset Trigger
 // Todo: Need dynamic bools of some kind to serialize their state in between game sessions
 
-namespace Parent_House_Framework.Interactions {
+namespace parent_house_framework.Interactions {
     public class Trigger : SerializedMonoBehaviour, IInteractable {
         [SerializeField, FoldoutGroup("Settings")]
         private InteractionSettings Settings;
@@ -14,24 +15,37 @@ namespace Parent_House_Framework.Interactions {
         [SerializeField, FoldoutGroup("Settings")]
         private Condition TriggerConditions;
 
-        [SerializeField] [FoldoutGroup("Status"), ReadOnly]
+        [SerializeField, FoldoutGroup("Status"), ReadOnly]
         private bool m_Activated;
-        
+
+        [SerializeField, FoldoutGroup("Status"), ReadOnly]
+        private bool m_ReadyToTrigger; // Prevents state change onEnable
+
+        [SerializeField, FoldoutGroup("Status"), ReadOnly]
+        private bool m_Instant;
+
+        public bool IsReady => m_ReadyToTrigger;
+
         public bool Activated {
             get => m_Activated;
             private set {
-                m_Activated = value;
-                OnChangeState?.Invoke(m_Activated, Callback);
+                if (!m_ReadyToTrigger) {
+                    m_ReadyToTrigger = true;
+                }
+                else {
+                    m_Activated = value;
+
+                    OnChangeState?.Invoke(m_Activated, m_Instant, Callback);
+                }
             }
         }
 
         // [SerializeField] [FoldoutGroup("Events")]
-        public Action<bool, Action> OnChangeState;
+        public Action<bool, bool, Action> OnChangeState;
 
         private void Callback() {
             if (Settings.ResetOnceFinished) {
                 ChangeState();
-                Debug.Log("Changing states");
             }
         }
 
@@ -40,7 +54,9 @@ namespace Parent_House_Framework.Interactions {
 
             IEnumerator Delay() {
                 yield return new WaitForEndOfFrame();
+                m_ReadyToTrigger = Settings.ReadyOnEnable;
                 Activated = Settings.ActiveOnEnable;
+                m_Instant = Settings.InstantOnEnable;
             }
         }
 
@@ -68,8 +84,13 @@ namespace Parent_House_Framework.Interactions {
         }
 
         public void SetState(bool state) {
-            if (Activated != state)
-                Activated = state;
+            m_Instant = false;
+            Activated = state;
+        }
+
+        public void SetState(bool state, bool instant) {
+            m_Instant = instant;
+            Activated = state;
         }
     }
 }

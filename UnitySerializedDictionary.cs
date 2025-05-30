@@ -5,7 +5,7 @@ using UnityEngine;
 // [Serializable]
 // public class ItemDictionary : UnitySerializedDictionary<Item, int>{}
 
-namespace Parent_House_Framework {
+namespace parent_house_framework {
     public abstract class UnitySerializedDictionary<TKey, TValue>:
         Dictionary<TKey, TValue>, ISerializationCallbackReceiver {
         [SerializeField] 

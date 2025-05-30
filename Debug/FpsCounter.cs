@@ -4,7 +4,7 @@ using System.Linq;
 using TMPro;
 using UnityEngine;
 
-namespace Parent_House_Framework {
+namespace parent_house_framework.Debug {
     public class FpsCounter : MonoBehaviour {
         public TextMeshProUGUI Text;
         private int _averageCounter;
