@@ -3,7 +3,7 @@ using System.Linq;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
-namespace Parent_House_Framework.UI {
+namespace parent_house_framework.UI {
     /// <summary>
     /// Bugs list:
     /// Randomly a menu while set their initial state out of sync with the menu group.

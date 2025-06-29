@@ -1,6 +1,6 @@
 using System;
 
-namespace Parent_House_Framework.Values {
+namespace parent_house_framework.Values {
     [Serializable]
     public class ChainedInt {
         // Todo: Would be nice to have minValue so it's not hardcoded to be a time variable...

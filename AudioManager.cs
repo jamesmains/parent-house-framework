@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace Parent_House_Framework {
+namespace parent_house_framework {
     /// <summary>
     /// Things to add:
     /// Track fading

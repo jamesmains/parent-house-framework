@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
-using Parent_House_Framework.Cores;
+using parent_house_framework.Cores;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
-namespace Parent_House_Framework.Interactions {
+namespace parent_house_framework.Interactions {
     public class TriggerEffect : SerializedMonoBehaviour
     {
         [Title("Effect Name")]

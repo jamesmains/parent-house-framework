@@ -1,8 +1,5 @@
 using System;
-using System.Collections.Generic;
 using DG.Tweening;
-using DialogueEditor;
-using Parent_House_Framework.Interactions;
 using Sirenix.OdinInspector;
 using TMPro;
 using UnityEngine;
@@ -12,7 +9,7 @@ using UnityEngine.UI;
 // Todo: Make more readable -- pretty hard to sort through
 // |-> Either individual files or group by category
 
-namespace Parent_House_Framework.Cores {
+namespace parent_house_framework.Cores {
     public class JuicyCore : MonoBehaviour {
     }
 
@@ -339,25 +336,25 @@ namespace Parent_House_Framework.Cores {
         }
     }
 
-    [Serializable]
-    public class TalkToEffect : ObjectEffect {
-        [SerializeField, FoldoutGroup("Dependencies"), ReadOnly]
-        private NPCConversation Convo;
-        
-        private List<Action> m_Callbacks;
-
-        public override void Initialize(GameObject parentObject) {
-            base.Initialize(parentObject);
-            Convo = parentObject.GetComponent<NPCConversation>();
-        }
-        public override void HandleState(bool state, Action callback) {
-            base.HandleState(state, callback);
-            if(state) {
-                ConversationManager.Instance.StartConversation(Convo);
-                // Todo: Figure out the point fo this?
-                // ConversationManager.OnConversationEnded += HandleCallbacks;
-                // ConversationManager.OnConversationEnded += delegate{ConversationManager.OnConversationEnded -= HandleCallbacks;};
-            }
-        }
-    }
+    // [Serializable]
+    // public class TalkToEffect : ObjectEffect {
+    //     [SerializeField, FoldoutGroup("Dependencies"), ReadOnly]
+    //     private NPCConversation Convo;
+    //     
+    //     private List<Action> m_Callbacks;
+    //
+    //     public override void Initialize(GameObject parentObject) {
+    //         base.Initialize(parentObject);
+    //         Convo = parentObject.GetComponent<NPCConversation>();
+    //     }
+    //     public override void HandleState(bool state, Action callback) {
+    //         base.HandleState(state, callback);
+    //         if(state) {
+    //             ConversationManager.Instance.StartConversation(Convo);
+    //             // Todo: Figure out the point fo this?
+    //             // ConversationManager.OnConversationEnded += HandleCallbacks;
+    //             // ConversationManager.OnConversationEnded += delegate{ConversationManager.OnConversationEnded -= HandleCallbacks;};
+    //         }
+    //     }
+    // }
 }

@@ -6,7 +6,7 @@ using UnityEngine;
 // Todo: Need callback for when interaction is done to optionally reset Trigger
 // Todo: Need dynamic bools of some kind to serialize their state in between game sessions
 
-namespace Parent_House_Framework.Interactions {
+namespace parent_house_framework.Interactions {
     public class Trigger : SerializedMonoBehaviour, IInteractable {
         [SerializeField, FoldoutGroup("Settings")]
         private InteractionSettings Settings;
@@ -31,7 +31,7 @@ namespace Parent_House_Framework.Interactions {
         private void Callback() {
             if (Settings.ResetOnceFinished) {
                 ChangeState();
-                Debug.Log("Changing states");
+                UnityEngine.Debug.Log("Changing states");
             }
         }
 

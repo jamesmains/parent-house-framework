@@ -1,6 +1,6 @@
 using System;
 
-namespace Parent_House_Framework.Values {
+namespace parent_house_framework.Values {
     public class ObservableValue<T> {
         private T m_value;
 

@@ -1,4 +1,4 @@
-namespace Parent_House_Framework.Interactions {
+namespace parent_house_framework.Interactions {
     public enum NotifyState {
         Entry,
         Exit

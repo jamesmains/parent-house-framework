@@ -1,22 +1,13 @@
 using System.Collections;
-using Parent_House_Framework.Interactions;
+using parent_house_framework.Interactions;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace Parent_House_Framework.UI {
+namespace parent_house_framework.UI {
     public enum MenuState {
         Closed,
         Open
-    }
-
-    public class MenuStateCondition : Condition {
-        [SerializeField, BoxGroup("Dependencies")]
-        private Menu TargetMenu;
-
-        public override bool IsConditionMet() {
-            return TargetMenu.State == MenuState.Open;
-        }
     }
 
     [RequireComponent(typeof(CanvasGroup))]
@@ -64,8 +55,8 @@ namespace Parent_House_Framework.UI {
 #endif
         private void OnEnable() {
             Initialized = false;
-            if (CanvasGroup == null) CanvasGroup = GetComponent<CanvasGroup>();
-            if (MenuTrigger == null) MenuTrigger = GetComponent<Trigger>();
+            CanvasGroup ??= GetComponent<CanvasGroup>();
+            MenuTrigger ??= GetComponent<Trigger>();
 
             if (InitialState == MenuState.Closed) {
                 Open(true);

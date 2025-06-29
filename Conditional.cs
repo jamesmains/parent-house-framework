@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Parent_House_Framework {
+namespace parent_house_framework {
     [Serializable]
     public abstract class Condition {
         public abstract bool IsConditionMet();

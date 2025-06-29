@@ -1,6 +1,6 @@
 using System;
 
-namespace Parent_House_Framework.Interactions {
+namespace parent_house_framework.Interactions {
     [Serializable]
     public class InteractionSettings
     {

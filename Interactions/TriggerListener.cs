@@ -4,7 +4,7 @@ using System.Linq;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
-namespace Parent_House_Framework.Interactions {
+namespace parent_house_framework.Interactions {
     public class TriggerListener : MonoBehaviour {
         [SerializeField, FoldoutGroup("Settings")]
         public Trigger Trigger;
