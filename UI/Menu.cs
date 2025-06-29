@@ -1,5 +1,4 @@
 using System.Collections;
-using parent_house_framework.Conditions;
 using parent_house_framework.Interactions;
 using Sirenix.OdinInspector;
 using UnityEngine;
@@ -11,45 +10,36 @@ namespace parent_house_framework.UI {
         Open
     }
 
-    public class MenuStateCondition : Condition {
-        [SerializeField, BoxGroup("Dependencies")]
-        private Menu TargetMenu;
-
-        public override bool IsConditionMet() {
-            return TargetMenu.State == MenuState.Open;
-        }
-    }
-
     [RequireComponent(typeof(CanvasGroup))]
     public class Menu : SerializedMonoBehaviour {
-        [SerializeField, FoldoutGroup("Settings")]
+        [SerializeField] [FoldoutGroup("Settings")]
         private MenuState InitialState = MenuState.Open;
 
-        [SerializeField, FoldoutGroup("Settings")]
+        [SerializeField] [FoldoutGroup("Settings")]
         private bool InstantOnEnable = true;
-        
-        [SerializeField, FoldoutGroup("Settings")]
-        private float OpenTime;
 
-        [SerializeField, FoldoutGroup("Settings")]
-        private float CloseTime;
-
-        [SerializeField, FoldoutGroup("Events")]
+        [SerializeField] [FoldoutGroup("Events")]
         private UnityEvent OnFinishOpen = new();
 
-        [SerializeField, FoldoutGroup("Events")]
+        [SerializeField] [FoldoutGroup("Events")]
         private UnityEvent OnFinishClose = new();
 
-        [SerializeField, FoldoutGroup("Dependencies"), ReadOnly]
+        [SerializeField] [FoldoutGroup("Dependencies")] [ReadOnly]
         private CanvasGroup CanvasGroup;
 
-        [SerializeField, FoldoutGroup("Dependencies"), ReadOnly]
+        [SerializeField] [FoldoutGroup("Dependencies")] [ReadOnly]
         private Trigger MenuTrigger;
 
-        [SerializeField, FoldoutGroup("Status"), ReadOnly]
+        [SerializeField] [FoldoutGroup("Status")] [ReadOnly]
         public MenuState State;
 
-        [SerializeField, FoldoutGroup("Status"), ReadOnly]
+        [SerializeField] [FoldoutGroup("Status")] [ReadOnly]
+        private float OpenTime;
+
+        [SerializeField] [FoldoutGroup("Status")] [ReadOnly]
+        private float CloseTime;
+
+        [SerializeField] [FoldoutGroup("Status")] [ReadOnly]
         private bool Initialized;
 
 #if UNITY_EDITOR
@@ -65,25 +55,23 @@ namespace parent_house_framework.UI {
 #endif
         private void OnEnable() {
             Initialized = false;
-            if (!CanvasGroup) CanvasGroup = GetComponent<CanvasGroup>();
-            if (!MenuTrigger) MenuTrigger = GetComponent<Trigger>();
+            CanvasGroup ??= GetComponent<CanvasGroup>();
+            MenuTrigger ??= GetComponent<Trigger>();
+
+            if (InitialState == MenuState.Closed) {
+                Open(true);
+                Initialized = true;
+                Close(InstantOnEnable);
+            }
+            else {
+                Close(true);
+                Initialized = true;
+                Open(InstantOnEnable);
+            }
 
             StartCoroutine(Init());
 
             IEnumerator Init() {
-                if (MenuTrigger) {
-                    while (!MenuTrigger.IsReady) {
-                        yield return new WaitForEndOfFrame();
-                    }
-                }
-                Initialized = true;
-                if (InitialState == MenuState.Closed) {
-                    Close(InstantOnEnable);
-                }
-                else {
-                    Open(InstantOnEnable);
-                }
-
                 yield return new WaitForEndOfFrame();
             }
         }
@@ -102,7 +90,7 @@ namespace parent_house_framework.UI {
             if (!Application.isPlaying)
                 return;
 #endif
-            MenuTrigger.SetState(true, instant);
+            MenuTrigger.SetState(true);
             Activate();
         }
 
@@ -112,7 +100,7 @@ namespace parent_house_framework.UI {
             if (!Application.isPlaying)
                 return;
 #endif
-            MenuTrigger.SetState(false, instant);
+            MenuTrigger.SetState(false);
             Deactivate();
         }
 

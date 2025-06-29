@@ -3,7 +3,7 @@ using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace parent_house_framework.Conditions {
+namespace parent_house_framework {
     public class ConditionalCheck : SerializedMonoBehaviour {
         [SerializeField] [BoxGroup("Settings")]
         private bool ContinuousCheck;

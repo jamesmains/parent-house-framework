@@ -1,7 +1,6 @@
 using System;
 using System.IO;
 using System.Xml.Serialization;
-using urban.Quest;
 
 namespace parent_house_framework {
     public static class SaveLoad {
@@ -47,7 +46,7 @@ namespace parent_house_framework {
                 }
             }
             catch (Exception e) {
-                UnityEngine.Debug.LogError($"Trying to delete file that isn't savedata or doesn't exist at: {filePath}. {e}");
+                UnityEngine.Debug.LogError($"Trying to delete file that isn't savedata or doesn't exist at: {filePath}");
             }
         }
 
@@ -57,7 +56,6 @@ namespace parent_house_framework {
     }
 
     [Serializable]
-    [XmlInclude(typeof(QuestLogData))] // Must include this for polymorphic data that inherits from SaveData
     public abstract class SaveData {
     }
 }
