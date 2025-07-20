@@ -1,37 +1,41 @@
 using System;
 using System.Collections;
+using parent_house_framework.Conditions;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
 // Todo: Need callback for when interaction is done to optionally reset Trigger
-// Todo: Need dynamic bools of some kind to serialize their state in between game sessions
+// Todo: Need dynamic list of bool of some kind to serialize their state in between game sessions
 
 namespace parent_house_framework.Interactions {
     public class Trigger : SerializedMonoBehaviour, IInteractable {
-        [SerializeField, FoldoutGroup("Settings")]
+        [SerializeField]
         private InteractionSettings Settings;
 
+        [SerializeField] public string TriggerName;
+
+        
         [SerializeField, FoldoutGroup("Settings")]
         private Condition TriggerConditions;
 
         [SerializeField] [FoldoutGroup("Status"), ReadOnly]
         private bool m_Activated;
-        
-        public bool Activated {
+
+        private bool Activated {
             get => m_Activated;
-            private set {
+            set {
                 m_Activated = value;
                 OnChangeState?.Invoke(m_Activated, Callback);
             }
         }
 
-        // [SerializeField] [FoldoutGroup("Events")]
+        [HideInInspector]
         public Action<bool, Action> OnChangeState;
 
         private void Callback() {
             if (Settings.ResetOnceFinished) {
                 ChangeState();
-                UnityEngine.Debug.Log("Changing states");
+                Debug.Log("Changing states");
             }
         }
 
@@ -42,6 +46,10 @@ namespace parent_house_framework.Interactions {
                 yield return new WaitForEndOfFrame();
                 Activated = Settings.ActiveOnEnable;
             }
+        }
+
+        public void SetState(bool state, bool instant) {
+            throw new NotImplementedException();
         }
 
         public void Notify(NotifyState state) {

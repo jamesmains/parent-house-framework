@@ -2,7 +2,6 @@ using System.Collections;
 using parent_house_framework.Interactions;
 using Sirenix.OdinInspector;
 using UnityEngine;
-using UnityEngine.Events;
 
 namespace parent_house_framework.UI {
     public enum MenuState {
@@ -12,17 +11,8 @@ namespace parent_house_framework.UI {
 
     [RequireComponent(typeof(CanvasGroup))]
     public class Menu : SerializedMonoBehaviour {
-        [SerializeField] [FoldoutGroup("Settings")]
-        private MenuState InitialState = MenuState.Open;
-
-        [SerializeField] [FoldoutGroup("Settings")]
-        private bool InstantOnEnable = true;
-
-        [SerializeField] [FoldoutGroup("Events")]
-        private UnityEvent OnFinishOpen = new();
-
-        [SerializeField] [FoldoutGroup("Events")]
-        private UnityEvent OnFinishClose = new();
+        [SerializeField]
+        private MenuSettings Settings;        
 
         [SerializeField] [FoldoutGroup("Dependencies")] [ReadOnly]
         private CanvasGroup CanvasGroup;
@@ -32,12 +22,6 @@ namespace parent_house_framework.UI {
 
         [SerializeField] [FoldoutGroup("Status")] [ReadOnly]
         public MenuState State;
-
-        [SerializeField] [FoldoutGroup("Status")] [ReadOnly]
-        private float OpenTime;
-
-        [SerializeField] [FoldoutGroup("Status")] [ReadOnly]
-        private float CloseTime;
 
         [SerializeField] [FoldoutGroup("Status")] [ReadOnly]
         private bool Initialized;
@@ -58,15 +42,15 @@ namespace parent_house_framework.UI {
             CanvasGroup ??= GetComponent<CanvasGroup>();
             MenuTrigger ??= GetComponent<Trigger>();
 
-            if (InitialState == MenuState.Closed) {
+            if (Settings.InitialState == MenuState.Closed) {
                 Open(true);
                 Initialized = true;
-                Close(InstantOnEnable);
+                Close(Settings.InstantOnEnable);
             }
             else {
                 Close(true);
                 Initialized = true;
-                Open(InstantOnEnable);
+                Open(Settings.InstantOnEnable);
             }
 
             StartCoroutine(Init());
@@ -90,7 +74,7 @@ namespace parent_house_framework.UI {
             if (!Application.isPlaying)
                 return;
 #endif
-            MenuTrigger.SetState(true);
+            MenuTrigger?.SetState(true);
             Activate();
         }
 
@@ -100,7 +84,7 @@ namespace parent_house_framework.UI {
             if (!Application.isPlaying)
                 return;
 #endif
-            MenuTrigger.SetState(false);
+            MenuTrigger?.SetState(false);
             Deactivate();
         }
 
@@ -110,11 +94,14 @@ namespace parent_house_framework.UI {
             State = MenuState.Open;
 
             if (!Initialized) return;
+            
+            Settings.OnStartOpen.Invoke();
+            
             StartCoroutine(WaitToOpen());
 
             IEnumerator WaitToOpen() {
-                yield return new WaitForSeconds(OpenTime);
-                OnFinishOpen.Invoke();
+                yield return new WaitForSeconds(Settings.OpenTime);
+                Settings.OnFinishOpen.Invoke();
             }
         }
 
@@ -124,11 +111,14 @@ namespace parent_house_framework.UI {
             State = MenuState.Closed;
 
             if (!Initialized) return;
+            
+            Settings.OnStartClose.Invoke();
+            
             StartCoroutine(WaitToClose());
 
             IEnumerator WaitToClose() {
-                yield return new WaitForSeconds(CloseTime);
-                OnFinishClose.Invoke();
+                yield return new WaitForSeconds(Settings.CloseTime);
+                Settings.OnFinishClose.Invoke();
             }
         }
     }

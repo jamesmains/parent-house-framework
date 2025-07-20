@@ -2,7 +2,6 @@ using System;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.UI;
-using urban.Urban_Time;
 
 namespace parent_house_framework.UI.Modal {
     public class ModalDisplayDefault : ModalDisplay {
