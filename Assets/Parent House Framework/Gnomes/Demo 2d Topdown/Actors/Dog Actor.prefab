@@ -86,7 +86,6 @@ GameObject:
   m_Component:
   - component: {fileID: 3506299006131848250}
   - component: {fileID: 5138224584805173960}
-  - component: {fileID: 5464720009372697439}
   m_Layer: 0
   m_Name: Dog Actor
   m_TagString: Untagged
@@ -127,9 +126,10 @@ MonoBehaviour:
     SerializedFormat: 2
     SerializedBytes: 
     ReferencedUnityObjects:
+    - {fileID: 2627976350338811989}
+    - {fileID: 6134938086314854270}
     - {fileID: 5322407290367316597}
     - {fileID: 1707102181064522367}
-    - {fileID: 6134938086314854270}
     SerializedBytesString: 
     Prefab: {fileID: 0}
     PrefabModificationsReferencedUnityObjects: []
@@ -137,7 +137,7 @@ MonoBehaviour:
     SerializationNodes:
     - Name: DefaultBrain
       Entry: 7
-      Data: 0|Parent_House_Framework.Demo.Brains.DogBrain, Assembly-CSharp
+      Data: 0|Parent_House_Framework.Gnomes.Demo_2d_Topdown.Brains.DogBrain, Assembly-CSharp
     - Name: DesiredDirection
       Entry: 7
       Data: UnityEngine.Vector3, UnityEngine.CoreModule
@@ -242,10 +242,10 @@ MonoBehaviour:
       Data: UnityEngine.Vector2, UnityEngine.CoreModule
     - Name: 
       Entry: 4
-      Data: 1
+      Data: 3
     - Name: 
       Entry: 4
-      Data: 3
+      Data: 5
     - Name: 
       Entry: 8
       Data: 
@@ -260,65 +260,87 @@ MonoBehaviour:
       Data: 
     - Name: InitialBehaviors
       Entry: 7
-      Data: 1|System.Collections.Generic.List`1[[Parent_House_Framework.ActorBehavior,
+      Data: 1|System.Collections.Generic.List`1[[Parent_House_Framework.Gnomes.ActorBehavior,
         Assembly-CSharp]], mscorlib
     - Name: 
       Entry: 12
       Data: 4
     - Name: 
       Entry: 7
-      Data: 2|Parent_House_Framework.Behaviors.Movement2dBehavior, Assembly-CSharp
+      Data: 2|Parent_House_Framework.Gnomes.Behaviors.AnimateBehavior, Assembly-CSharp
+    - Name: Parent
+      Entry: 6
+      Data: 
+    - Name: ActorAnimator
+      Entry: 10
+      Data: 0
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 3|Parent_House_Framework.Gnomes.Behaviors.Turn2dBehavior, Assembly-CSharp
+    - Name: Parent
+      Entry: 6
+      Data: 
+    - Name: RootGfxTransform
+      Entry: 10
+      Data: 1
+    - Name: TurnSpeed
+      Entry: 4
+      Data: 12
+    - Name: Invert
+      Entry: 5
+      Data: true
+    - Name: FacingDirection
+      Entry: 3
+      Data: 1
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 4|Parent_House_Framework.Gnomes.Behaviors.Movement2dBehavior, Assembly-CSharp
     - Name: Parent
       Entry: 6
       Data: 
     - Name: BaseSpeed
       Entry: 4
-      Data: 4
+      Data: 2
     - Name: MaxVelocity
       Entry: 4
-      Data: 0
+      Data: 12
     - Name: 
       Entry: 8
       Data: 
     - Name: 
       Entry: 7
-      Data: 3|Parent_House_Framework.Behaviors.AnimateBehavior, Assembly-CSharp
-    - Name: Parent
-      Entry: 6
-      Data: 
-    - Name: ActorAnimator
-      Entry: 6
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 4|Parent_House_Framework.Demo.Behaviors.RandomSpeakBehavior, Assembly-CSharp
+      Data: 5|Parent_House_Framework.Gnomes.Demo_2d_Topdown.Behaviors.RandomSpeakBehavior,
+        Assembly-CSharp
     - Name: Parent
       Entry: 6
       Data: 
     - Name: DialogueBox
       Entry: 10
-      Data: 0
+      Data: 2
     - Name: DialogueText
       Entry: 10
-      Data: 1
+      Data: 3
     - Name: SpeakTimeRange
       Entry: 7
       Data: UnityEngine.Vector2, UnityEngine.CoreModule
     - Name: 
       Entry: 4
-      Data: 4
+      Data: 2
     - Name: 
       Entry: 4
-      Data: 6
+      Data: 4
     - Name: 
       Entry: 8
       Data: 
     - Name: TextOptions
       Entry: 7
-      Data: 5|System.Collections.Generic.List`1[[System.String, mscorlib]], mscorlib
+      Data: 6|System.Collections.Generic.List`1[[System.String, mscorlib]], mscorlib
     - Name: 
       Entry: 12
       Data: 3
@@ -327,7 +349,7 @@ MonoBehaviour:
       Data: Bark!
     - Name: 
       Entry: 1
-      Data: '*grrrr* Arf!'
+      Data: Arf!
     - Name: 
       Entry: 1
       Data: Bow wow!
@@ -350,27 +372,6 @@ MonoBehaviour:
       Entry: 8
       Data: 
     - Name: 
-      Entry: 7
-      Data: 6|Parent_House_Framework.Behaviors.Turn2dBehavior, Assembly-CSharp
-    - Name: Parent
-      Entry: 6
-      Data: 
-    - Name: RootGfxTransform
-      Entry: 10
-      Data: 2
-    - Name: TurnSpeed
-      Entry: 4
-      Data: 12
-    - Name: Invert
-      Entry: 5
-      Data: true
-    - Name: FacingDirection
-      Entry: 3
-      Data: 1
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
       Entry: 13
       Data: 
     - Name: 
@@ -378,7 +379,7 @@ MonoBehaviour:
       Data: 
     - Name: ActiveBehaviors
       Entry: 7
-      Data: 7|System.Collections.Generic.List`1[[Parent_House_Framework.ActorBehavior,
+      Data: 7|System.Collections.Generic.List`1[[Parent_House_Framework.Gnomes.ActorBehavior,
         Assembly-CSharp]], mscorlib
     - Name: 
       Entry: 12
@@ -390,174 +391,8 @@ MonoBehaviour:
       Entry: 8
       Data: 
     - Name: Brain
-      Entry: 7
-      Data: 8|Parent_House_Framework.Brains.DefaultPlayerBrain, Assembly-CSharp
-    - Name: DesiredDirection
-      Entry: 7
-      Data: UnityEngine.Vector3, UnityEngine.CoreModule
-    - Name: 
-      Entry: 4
-      Data: 0
-    - Name: 
-      Entry: 4
-      Data: 0
-    - Name: 
-      Entry: 4
-      Data: 0
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: DesiredMagnitude
-      Entry: 4
-      Data: 0
-    - Name: Velocity
-      Entry: 7
-      Data: UnityEngine.Vector3, UnityEngine.CoreModule
-    - Name: 
-      Entry: 4
-      Data: 0
-    - Name: 
-      Entry: 4
-      Data: 0
-    - Name: 
-      Entry: 4
-      Data: 0
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: LookTarget
-      Entry: 7
-      Data: UnityEngine.Vector3, UnityEngine.CoreModule
-    - Name: 
-      Entry: 4
-      Data: 0
-    - Name: 
-      Entry: 4
-      Data: 0
-    - Name: 
-      Entry: 4
-      Data: 0
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: AngularInput
-      Entry: 7
-      Data: UnityEngine.Vector3, UnityEngine.CoreModule
-    - Name: 
-      Entry: 4
-      Data: 0
-    - Name: 
-      Entry: 4
-      Data: 0
-    - Name: 
-      Entry: 4
-      Data: 0
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: AngularVelocity
-      Entry: 7
-      Data: UnityEngine.Vector3, UnityEngine.CoreModule
-    - Name: 
-      Entry: 4
-      Data: 0
-    - Name: 
-      Entry: 4
-      Data: 0
-    - Name: 
-      Entry: 4
-      Data: 0
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: Grounded
-      Entry: 5
-      Data: false
-    - Name: IsSprinting
-      Entry: 5
-      Data: false
-    - Name: JumpIntent
-      Entry: 5
-      Data: false
-    - Name: PrimaryActionIntent
-      Entry: 5
-      Data: false
-    - Name: SecondaryActionIntent
-      Entry: 5
-      Data: false
-    - Name: InteractActionIntent
-      Entry: 5
-      Data: false
-    - Name: Parent
       Entry: 6
       Data: 
-    - Name: PossessingPlayer
-      Entry: 6
-      Data: 
-    - Name: MovementActionName
-      Entry: 1
-      Data: Move
-    - Name: JumpActionName
-      Entry: 6
-      Data: 
-    - Name: InteractActionName
-      Entry: 6
-      Data: 
-    - Name: PrimaryActionName
-      Entry: 6
-      Data: 
-    - Name: SecondaryActionName
-      Entry: 6
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
---- !u!61 &5464720009372697439
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2041657811090934779}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_CompositeOperation: 0
-  m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 1}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0, y: 0}
-    oldSize: {x: 0, y: 0}
-    newSize: {x: 0, y: 0}
-    adaptiveTilingThreshold: 0
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  m_Size: {x: 3, y: 3}
-  m_EdgeRadius: 0
 --- !u!1 &2783359436190646483
 GameObject:
   m_ObjectHideFlags: 0
@@ -780,7 +615,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Ayy, bark bark
+  m_text: Default Text
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}

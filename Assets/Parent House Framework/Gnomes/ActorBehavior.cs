@@ -8,7 +8,6 @@ namespace Parent_House_Framework.Gnomes {
         protected Actor Parent;
         public virtual void Bind(Actor parentActor) {
             Parent =  parentActor;
-            Debug.Log("Bound to " + Parent.gameObject.name);
         }
 
         public virtual void Awake() {

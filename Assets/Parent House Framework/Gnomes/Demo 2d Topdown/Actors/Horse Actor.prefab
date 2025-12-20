@@ -52,82 +52,16 @@ MonoBehaviour:
     SerializedBytes: 
     ReferencedUnityObjects:
     - {fileID: 2041657811090934779, guid: 8b3ccb95922dc83fab8451365cb21461, type: 3}
+    - {fileID: 5690353633016214545}
+    - {fileID: 818450644917331224}
     SerializedBytesString: 
     Prefab: {fileID: 0}
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes:
     - Name: DefaultBrain
-      Entry: 6
-      Data: 
-    - Name: InitialBehaviors
       Entry: 7
-      Data: 0|System.Collections.Generic.List`1[[Parent_House_Framework.ActorBehavior,
-        Assembly-CSharp]], mscorlib
-    - Name: 
-      Entry: 12
-      Data: 3
-    - Name: 
-      Entry: 7
-      Data: 1|Parent_House_Framework.Behaviors.Movement2dBehavior, Assembly-CSharp
-    - Name: Parent
-      Entry: 6
-      Data: 
-    - Name: BaseSpeed
-      Entry: 4
-      Data: 4
-    - Name: MaxVelocity
-      Entry: 4
-      Data: 0
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 2|Parent_House_Framework.Behaviors.AnimateBehavior, Assembly-CSharp
-    - Name: Parent
-      Entry: 6
-      Data: 
-    - Name: ActorAnimator
-      Entry: 6
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 3|Parent_House_Framework.Behaviors.MountHorseInteractableBehavior, Assembly-CSharp
-    - Name: Parent
-      Entry: 6
-      Data: 
-    - Name: HorseMountActor
-      Entry: 10
-      Data: 0
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 13
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: ActiveBehaviors
-      Entry: 7
-      Data: 4|System.Collections.Generic.List`1[[Parent_House_Framework.ActorBehavior,
-        Assembly-CSharp]], mscorlib
-    - Name: 
-      Entry: 12
-      Data: 0
-    - Name: 
-      Entry: 13
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: Brain
-      Entry: 7
-      Data: 5|Parent_House_Framework.Brains.DefaultPlayerBrain, Assembly-CSharp
+      Data: 0|Parent_House_Framework.Gnomes.Demo_2d_Topdown.Brains.DogBrain, Assembly-CSharp
     - Name: DesiredDirection
       Entry: 7
       Data: UnityEngine.Vector3, UnityEngine.CoreModule
@@ -227,26 +161,116 @@ MonoBehaviour:
     - Name: Parent
       Entry: 6
       Data: 
-    - Name: PossessingPlayer
+    - Name: SeekTimeRange
+      Entry: 7
+      Data: UnityEngine.Vector2, UnityEngine.CoreModule
+    - Name: 
+      Entry: 4
+      Data: 1
+    - Name: 
+      Entry: 4
+      Data: 2
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: NextSeekTime
+      Entry: 4
+      Data: 0
+    - Name: LastSeekTime
+      Entry: 4
+      Data: 0
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: InitialBehaviors
+      Entry: 7
+      Data: 1|System.Collections.Generic.List`1[[Parent_House_Framework.Gnomes.ActorBehavior,
+        Assembly-CSharp]], mscorlib
+    - Name: 
+      Entry: 12
+      Data: 4
+    - Name: 
+      Entry: 7
+      Data: 2|Parent_House_Framework.Gnomes.Demo_2d_Topdown.Behaviors.MountHorseInteractableBehavior,
+        Assembly-CSharp
+    - Name: Parent
       Entry: 6
       Data: 
-    - Name: MovementActionName
-      Entry: 1
-      Data: Move
-    - Name: JumpActionName
+    - Name: HorseMountActor
+      Entry: 10
+      Data: 0
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 3|Parent_House_Framework.Gnomes.Behaviors.AnimateBehavior, Assembly-CSharp
+    - Name: Parent
       Entry: 6
       Data: 
-    - Name: InteractActionName
+    - Name: ActorAnimator
+      Entry: 10
+      Data: 1
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 4|Parent_House_Framework.Gnomes.Behaviors.Movement2dBehavior, Assembly-CSharp
+    - Name: Parent
       Entry: 6
       Data: 
-    - Name: PrimaryActionName
+    - Name: BaseSpeed
+      Entry: 4
+      Data: 2
+    - Name: MaxVelocity
+      Entry: 4
+      Data: 12
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 5|Parent_House_Framework.Gnomes.Behaviors.Turn2dBehavior, Assembly-CSharp
+    - Name: Parent
       Entry: 6
       Data: 
-    - Name: SecondaryActionName
-      Entry: 6
+    - Name: RootGfxTransform
+      Entry: 10
+      Data: 2
+    - Name: TurnSpeed
+      Entry: 4
+      Data: 12
+    - Name: Invert
+      Entry: 5
+      Data: true
+    - Name: FacingDirection
+      Entry: 3
+      Data: 1
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
       Data: 
     - Name: 
       Entry: 8
+      Data: 
+    - Name: ActiveBehaviors
+      Entry: 7
+      Data: 6|System.Collections.Generic.List`1[[Parent_House_Framework.Gnomes.ActorBehavior,
+        Assembly-CSharp]], mscorlib
+    - Name: 
+      Entry: 12
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: Brain
+      Entry: 6
       Data: 
 --- !u!50 &9101975591579969507
 Rigidbody2D:

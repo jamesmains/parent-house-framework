@@ -143,8 +143,9 @@ MonoBehaviour:
     SerializedFormat: 2
     SerializedBytes: 
     ReferencedUnityObjects:
-    - {fileID: 9117706411056797386}
+    - {fileID: 5690353633016214545}
     - {fileID: 818450644917331224}
+    - {fileID: 9117706411056797386}
     SerializedBytesString: 
     Prefab: {fileID: 0}
     PrefabModificationsReferencedUnityObjects: []
@@ -155,45 +156,18 @@ MonoBehaviour:
       Data: 
     - Name: InitialBehaviors
       Entry: 7
-      Data: 0|System.Collections.Generic.List`1[[Parent_House_Framework.ActorBehavior,
+      Data: 0|System.Collections.Generic.List`1[[Parent_House_Framework.Gnomes.ActorBehavior,
         Assembly-CSharp]], mscorlib
     - Name: 
       Entry: 12
       Data: 4
     - Name: 
       Entry: 7
-      Data: 1|Parent_House_Framework.Behaviors.Movement2dBehavior, Assembly-CSharp
-    - Name: Parent
-      Entry: 6
-      Data: 
-    - Name: BaseSpeed
-      Entry: 4
-      Data: 8
-    - Name: MaxVelocity
-      Entry: 4
-      Data: 0
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 2|Parent_House_Framework.Behaviors.AnimateBehavior, Assembly-CSharp
+      Data: 1|Parent_House_Framework.Gnomes.Behaviors.AnimateBehavior, Assembly-CSharp
     - Name: Parent
       Entry: 6
       Data: 
     - Name: ActorAnimator
-      Entry: 6
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 3|Parent_House_Framework.Behaviors.InteractorBehavior, Assembly-CSharp
-    - Name: Parent
-      Entry: 6
-      Data: 
-    - Name: Interactor
       Entry: 10
       Data: 0
     - Name: 
@@ -201,7 +175,7 @@ MonoBehaviour:
       Data: 
     - Name: 
       Entry: 7
-      Data: 4|Parent_House_Framework.Behaviors.Turn2dBehavior, Assembly-CSharp
+      Data: 2|Parent_House_Framework.Gnomes.Behaviors.Turn2dBehavior, Assembly-CSharp
     - Name: Parent
       Entry: 6
       Data: 
@@ -221,6 +195,33 @@ MonoBehaviour:
       Entry: 8
       Data: 
     - Name: 
+      Entry: 7
+      Data: 3|Parent_House_Framework.Gnomes.Behaviors.InteractorBehavior, Assembly-CSharp
+    - Name: Parent
+      Entry: 6
+      Data: 
+    - Name: Interactor
+      Entry: 10
+      Data: 2
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 4|Parent_House_Framework.Gnomes.Behaviors.Movement2dBehavior, Assembly-CSharp
+    - Name: Parent
+      Entry: 6
+      Data: 
+    - Name: BaseSpeed
+      Entry: 4
+      Data: 6
+    - Name: MaxVelocity
+      Entry: 4
+      Data: 12
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
       Entry: 13
       Data: 
     - Name: 
@@ -228,7 +229,7 @@ MonoBehaviour:
       Data: 
     - Name: ActiveBehaviors
       Entry: 7
-      Data: 5|System.Collections.Generic.List`1[[Parent_House_Framework.ActorBehavior,
+      Data: 5|System.Collections.Generic.List`1[[Parent_House_Framework.Gnomes.ActorBehavior,
         Assembly-CSharp]], mscorlib
     - Name: 
       Entry: 12
@@ -240,127 +241,7 @@ MonoBehaviour:
       Entry: 8
       Data: 
     - Name: Brain
-      Entry: 7
-      Data: 6|Parent_House_Framework.Brains.DefaultPlayerBrain, Assembly-CSharp
-    - Name: DesiredDirection
-      Entry: 7
-      Data: UnityEngine.Vector3, UnityEngine.CoreModule
-    - Name: 
-      Entry: 4
-      Data: 0
-    - Name: 
-      Entry: 4
-      Data: 0
-    - Name: 
-      Entry: 4
-      Data: 0
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: DesiredMagnitude
-      Entry: 4
-      Data: 0
-    - Name: Velocity
-      Entry: 7
-      Data: UnityEngine.Vector3, UnityEngine.CoreModule
-    - Name: 
-      Entry: 4
-      Data: 0
-    - Name: 
-      Entry: 4
-      Data: 0
-    - Name: 
-      Entry: 4
-      Data: 0
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: LookTarget
-      Entry: 7
-      Data: UnityEngine.Vector3, UnityEngine.CoreModule
-    - Name: 
-      Entry: 4
-      Data: 0
-    - Name: 
-      Entry: 4
-      Data: 0
-    - Name: 
-      Entry: 4
-      Data: 0
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: AngularInput
-      Entry: 7
-      Data: UnityEngine.Vector3, UnityEngine.CoreModule
-    - Name: 
-      Entry: 4
-      Data: 0
-    - Name: 
-      Entry: 4
-      Data: 0
-    - Name: 
-      Entry: 4
-      Data: 0
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: AngularVelocity
-      Entry: 7
-      Data: UnityEngine.Vector3, UnityEngine.CoreModule
-    - Name: 
-      Entry: 4
-      Data: 0
-    - Name: 
-      Entry: 4
-      Data: 0
-    - Name: 
-      Entry: 4
-      Data: 0
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: Grounded
-      Entry: 5
-      Data: false
-    - Name: IsSprinting
-      Entry: 5
-      Data: false
-    - Name: JumpIntent
-      Entry: 5
-      Data: false
-    - Name: PrimaryActionIntent
-      Entry: 5
-      Data: false
-    - Name: SecondaryActionIntent
-      Entry: 5
-      Data: false
-    - Name: InteractActionIntent
-      Entry: 5
-      Data: false
-    - Name: Parent
       Entry: 6
-      Data: 
-    - Name: PossessingPlayer
-      Entry: 6
-      Data: 
-    - Name: MovementActionName
-      Entry: 1
-      Data: Move
-    - Name: JumpActionName
-      Entry: 6
-      Data: 
-    - Name: InteractActionName
-      Entry: 6
-      Data: 
-    - Name: PrimaryActionName
-      Entry: 6
-      Data: 
-    - Name: SecondaryActionName
-      Entry: 6
-      Data: 
-    - Name: 
-      Entry: 8
       Data: 
 --- !u!50 &8730713071979743692
 Rigidbody2D:

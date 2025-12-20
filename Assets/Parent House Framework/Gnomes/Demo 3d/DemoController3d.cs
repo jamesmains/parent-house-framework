@@ -5,20 +5,19 @@ using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace Parent_House_Framework.Gnomes.Demo_2d_Topdown {
-    public class DemoController: MonoBehaviour {
+namespace Parent_House_Framework.Gnomes.Demo_3d {
+    public class DemoController3d: MonoBehaviour {
         [SerializeField,FoldoutGroup("Dependencies")]
         private PlayerInputManager InputManager;
         
         [SerializeField,FoldoutGroup("Settings")]
         private GameObject PlayerActorPrefab;
-        
-        [SerializeField,FoldoutGroup("Settings")]
-        private List<GameObject> RandomActors;
 
         private void OnEnable() {
             Debug.Log("Binding onPlayerJoined to SpawnPlayer");
             InputManager.onPlayerJoined += SpawnPlayer;
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
         }
 
         private void OnDisable() {
@@ -29,13 +28,8 @@ namespace Parent_House_Framework.Gnomes.Demo_2d_Topdown {
             Debug.Log("Spawning Player");
             var spawnedActor = Pooler.Spawn(PlayerActorPrefab).GetComponent<Actor>();
             var newBrain = new DefaultPlayerBrain();
-            newBrain.BindPlayerInput(playerInput);
+            newBrain.BindPlayerInput(playerInput,playerInput.gameObject.GetComponent<Player>());
             spawnedActor.SetPossession(newBrain);
-        }
-
-        [Button]
-        private void SpawnRandomActor() {
-            Pooler.Spawn(RandomActors[UnityEngine.Random.Range(0, RandomActors.Count)]);
         }
     }
 }

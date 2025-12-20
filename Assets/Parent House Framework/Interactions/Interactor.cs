@@ -31,26 +31,26 @@ namespace Parent_House_Framework.Interactions {
         
         private void OnTriggerEnter(Collider other) {
             if (CollisionType != InteractionCollisionType.Collider) return;
-            if (!other.TryGetComponent<Actor>(out var actor)) return;
-            InteractableTargets.TryAdd(actor.GetBehavior<IInteract>(), actor);
+            if (!other.TryGetComponent<Actor>(out var actor) || actor.GetBehavior<IInteract>(out var interact) == null) return;
+            InteractableTargets.TryAdd(interact, actor);
         }
 
         private void OnTriggerEnter2D(Collider2D other) {
             if (CollisionType != InteractionCollisionType.Collider2d) return;
-            if(!other.TryGetComponent<Actor>(out var actor)) return;
-            InteractableTargets.TryAdd(actor.GetBehavior<IInteract>(), actor);
+            if (!other.TryGetComponent<Actor>(out var actor) || actor.GetBehavior<IInteract>(out var interact) == null) return;
+            InteractableTargets.TryAdd(interact, actor);
         }
 
         private void OnTriggerExit(Collider other) {
             if (CollisionType != InteractionCollisionType.Collider) return;
-            if(!other.TryGetComponent<Actor>(out var actor)) return;
-            InteractableTargets.Remove(actor.GetBehavior<IInteract>());
+            if (!other.TryGetComponent<Actor>(out var actor) || actor.GetBehavior<IInteract>(out var interact) == null) return;
+            InteractableTargets.Remove(interact);
         }
 
         private void OnTriggerExit2D(Collider2D other) {
             if (CollisionType != InteractionCollisionType.Collider2d) return;
-            if(!other.TryGetComponent<Actor>(out var actor)) return;
-            InteractableTargets.Remove(actor.GetBehavior<IInteract>());
+            if (!other.TryGetComponent<Actor>(out var actor) || actor.GetBehavior<IInteract>(out var interact) == null) return;
+            InteractableTargets.Remove(interact);
         }
     }
 }

@@ -1,4 +1,5 @@
 using System;
+using Parent_House_Framework.Gnomes.Behaviors;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
@@ -11,6 +12,10 @@ namespace Parent_House_Framework.Gnomes {
     /// </summary>
     [Serializable]
     public abstract class ActorBrain {
+        
+        [SerializeField, FoldoutGroup("Settings")]
+        public CameraBehavior OverrideCameraBehavior;
+        
         [FoldoutGroup("Status"), ReadOnly] public Vector3 DesiredDirection; // Normalized vector for movement
         [FoldoutGroup("Status"), ReadOnly] public float DesiredMagnitude; // 0.0 to 1.0 (speed intent)
         [FoldoutGroup("Status"), ReadOnly] public Vector3 Velocity;
